@@ -1,0 +1,23 @@
+﻿# Vercel
+.vercel
+
+# Next.js
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs de déploiement
+deploy*.log
+deploy_out.txt
+deploy_err.txt
+
+# OS
+.DS_Store
+Thumbs.db
