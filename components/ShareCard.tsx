@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, Check, Share2, MessageCircle } from 'lucide-react';
+import { Copy, Check, Share2, MessageCircle, Download, Loader2 } from 'lucide-react';
 import { Player, AccountValue } from '@/types/clash';
 import { useI18n } from './I18nProvider';
 import BattleCard from './BattleCard';
@@ -14,10 +14,14 @@ interface ShareCardProps {
 export default function ShareCard({ player, accountValue }: ShareCardProps) {
   const { t } = useI18n();
   const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const siteUrl = 'https://flexroyale.vercel.app';
   const tag = player.tag.replace('#', '');
   const shareUrl = `${siteUrl}/player/${tag}`;
+
+  // URL de l'image OG (déjà générée par /api/og avec Satori + Sharp)
+  const ogUrl = `${siteUrl}/api/og?name=${encodeURIComponent(player.name)}&value=${accountValue.totalEuros}&grade=${accountValue.flexGrade}&trophies=${player.bestTrophies || player.trophies}&archetype=${encodeURIComponent(accountValue.archetypeEmoji + ' ' + accountValue.archetype)}&topPercent=${encodeURIComponent(accountValue.topPercent)}`;
 
   // Texte sans URL (le lien est ajouté séparément selon la plateforme)
   const baseText = t.shareTweetTemplate
@@ -49,6 +53,30 @@ export default function ShareCard({ player, accountValue }: ShareCardProps) {
     }
   }
 
+  async function downloadPng() {
+    if (downloading) return;
+    setDownloading(true);
+    try {
+      const response = await fetch(ogUrl);
+      if (!response.ok) throw new Error('Génération de l\'image échouée');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `flexroyale-${player.name.replace(/[^a-z0-9]/gi, '_')}-grade${accountValue.flexGrade}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur téléchargement:', err);
+      // Fallback : ouvrir l'image dans un nouvel onglet
+      window.open(ogUrl, '_blank');
+    } finally {
+      setDownloading(false);
+    }
+  }
+
   return (
     <div className="glass-card p-5">
       <div className="flex items-center gap-2 mb-4">
@@ -59,6 +87,25 @@ export default function ShareCard({ player, accountValue }: ShareCardProps) {
         <BattleCard player={player} accountValue={accountValue} />
       </div>
       <div className="flex flex-col gap-2">
+        {/* Télécharger en PNG */}
+        <button
+          onClick={downloadPng}
+          disabled={downloading}
+          className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm transition-all duration-200 disabled:opacity-60"
+          style={{
+            background: 'linear-gradient(135deg, rgba(37,99,235,0.3), rgba(99,37,235,0.3))',
+            border: '1px solid rgba(37,99,235,0.5)',
+          }}
+          onMouseEnter={e => !downloading && (e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.45), rgba(99,37,235,0.45))')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.3), rgba(99,37,235,0.3))')}
+        >
+          {downloading
+            ? <><Loader2 size={15} className="animate-spin" /> Génération en cours...</>
+            : <><Download size={15} /> Télécharger en PNG</>
+          }
+        </button>
+
+        {/* Copier le lien */}
         <button
           onClick={copyLink}
           className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm transition-all duration-200"
@@ -71,6 +118,8 @@ export default function ShareCard({ player, accountValue }: ShareCardProps) {
             : <><Copy size={15} /> {t.shareCopy}</>
           }
         </button>
+
+        {/* Réseaux sociaux */}
         <div className="grid grid-cols-2 gap-2">
           <a
             href={twitterUrl}
