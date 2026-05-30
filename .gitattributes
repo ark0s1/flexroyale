@@ -1,0 +1,14 @@
+# Normalise les fins de ligne : LF dans le repo, quel que soit l'OS.
+# Évite le "tout le fichier modifié" causé par CRLF/LF (Windows ↔ Vercel/Linux),
+# une source de diffs bruités et de confusion.
+* text=auto eol=lf
+
+# Fichiers binaires — ne jamais convertir les fins de ligne
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.ttf  binary
+*.woff  binary
+*.woff2 binary

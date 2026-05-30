@@ -18,7 +18,7 @@ export const GRADE_CONFIG: Record<Grade, GradeConfig> = {
     borderColor: 'border-rose-400',
     glowColor: 'shadow-rose-500/50',
     tagline: 'APEX LEGEND',
-    emoji: 'u{1F451}',
+    emoji: '👑',
   },
 
   S: {

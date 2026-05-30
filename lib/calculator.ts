@@ -184,6 +184,7 @@ export function calculateAccountValue(player: Player): AccountValue {
 
   const maxCards = player.cards?.filter(c => c.level >= c.maxLevel).length || 0;
   const flexScore = calculateFlexScore(totalGems, player.bestTrophies || player.trophies || 0, maxCards);
+  const { archetype, emoji: archetypeEmoji } = getArchetype(player, flexScore);
 
   return {
     totalEuros,
@@ -191,9 +192,8 @@ export function calculateAccountValue(player: Player): AccountValue {
     flexGrade: getGrade(flexScore),
     flexScore,
     topPercent: getTopPercent(flexScore),
-    ...getArchetype(player, flexScore),
-    archetypeEmoji: getArchetype(player, flexScore).emoji,
-    archetype: getArchetype(player, flexScore).archetype,
+    archetype,
+    archetypeEmoji,
     breakdown: {
       cards:      { value: gemsToEuros(cardsData.gems),      gems: cardsData.gems,      label: '🃏 Niveaux des cartes',    detail: cardsData.detail },
       evolutions: { value: gemsToEuros(evolutionsData.gems), gems: evolutionsData.gems, label: '⚡ Évolutions',            detail: evolutionsData.detail },

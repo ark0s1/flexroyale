@@ -13,10 +13,16 @@ node_modules/
 .env.local
 .env.*.local
 
-# Logs de déploiement
-deploy*.log
-deploy_out.txt
-deploy_err.txt
+# Logs & sorties de debug (déploiement, tests, npm…)
+*.log
+*_out.txt
+*_err.txt
+
+# Cache de build TypeScript
+*.tsbuildinfo
+
+# Couverture de tests
+/coverage
 
 # OS
 .DS_Store
