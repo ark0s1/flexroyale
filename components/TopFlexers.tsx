@@ -1,7 +1,11 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+
+// Toutes les entrées antérieures à cette date sont masquées.
+// Changer la date ici pour un nouveau reset (les anciennes entrées sans addedAt sont toujours masquées).
+const LEADERBOARD_RESET_DATE = new Date('2026-05-31T00:00:00.000Z');
 
 const GRADE_STYLES: Record<string, { bg: string; text: string }> = {
   'S+': { bg: 'rgba(255,0,80,0.15)', text: '#FF0050' },
@@ -22,6 +26,7 @@ interface FlexerEntry {
   archetypeEmoji: string;
   trophies: number;
   value: number;
+  addedAt?: string;
 }
 
 export default function TopFlexers({ onCountChange }: { onCountChange?: (n: number) => void } = {}) {
@@ -33,8 +38,12 @@ export default function TopFlexers({ onCountChange }: { onCountChange?: (n: numb
       .then(r => r.ok ? r.json() : [])
       .then((data: FlexerEntry[]) => {
         const arr = Array.isArray(data) ? data : [];
-        setEntries(arr);
-        onCountChange?.(arr.length);
+        // Masquer les entrées sans addedAt (pré-reset) ou antérieures à LEADERBOARD_RESET_DATE
+        const visible = arr.filter(
+          e => e.addedAt && new Date(e.addedAt) >= LEADERBOARD_RESET_DATE
+        );
+        setEntries(visible);
+        onCountChange?.(visible.length);
         setLoading(false);
       })
       .catch(() => setLoading(false));

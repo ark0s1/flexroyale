@@ -1,4 +1,4 @@
-﻿import { Redis } from '@upstash/redis';
+import { Redis } from '@upstash/redis';
 
 const url = process.env.UPSTASH_REDIS_REST_URL;
 const token = process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -18,4 +18,5 @@ export interface LeaderboardEntry {
   archetypeEmoji: string;
   trophies: number;
   value: number;
+  addedAt?: string; // ISO 8601 — absent sur les anciennes entrées
 }

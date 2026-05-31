@@ -14,6 +14,7 @@ export async function saveToLeaderboard(player: Player, accountValue: AccountVal
       archetypeEmoji: accountValue.archetypeEmoji,
       trophies: player.bestTrophies || player.trophies || 0,
       value: Math.round(accountValue.totalEuros),
+      addedAt: new Date().toISOString(),
     };
 
     // Score = valeur en euros (sorted set trié par valeur)
