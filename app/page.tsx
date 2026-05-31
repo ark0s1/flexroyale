@@ -68,7 +68,7 @@ export default function HomePage() {
         {/* Stats strip */}
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-8 sm:gap-16 text-center">
           <div>
-            <p className="font-gaming text-3xl sm:text-4xl gold-text-shine font-bold">25 000 €</p>
+            <p className="font-gaming text-3xl sm:text-4xl gold-text-shine font-bold">5 000 €</p>
             <p className="text-gray-500 text-xs uppercase tracking-widest mt-1">{t.homeStatMax}</p>
           </div>
           <div className="w-px h-10 bg-white/10 hidden sm:block" />
