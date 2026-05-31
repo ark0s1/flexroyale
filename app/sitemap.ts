@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://flexroyale.vercel.app').trim();
 
-const GRADES = ['S', 'A', 'B', 'C', 'D'] as const;
+const GRADES = ['S-plus', 'S', 'A', 'B', 'C', 'D'] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const gradePages = GRADES.map((grade) => ({

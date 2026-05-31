@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable @next/next/no-img-element -- icônes de cartes (CDN Clash Royale) volontairement en <img> : évite le coût + la surface de vuln de l'optimiseur d'images Vercel (cf. npm audit) ; perf via loading=lazy + dimensions. */
 import { Player } from '@/types/clash';
 
 interface Treasure {
@@ -276,7 +277,7 @@ export default function RarityRanking({ player }: Props) {
                 style={{ background: style.bg, border: `1.5px solid ${style.border}` }}
               >
                 {t.iconUrl ? (
-                  <img src={t.iconUrl} alt={t.label} className="w-10 h-10 object-contain" />
+                  <img src={t.iconUrl} alt={t.label} width={40} height={40} loading="lazy" decoding="async" className="w-10 h-10 object-contain" />
                 ) : (
                   <span className="text-2xl">{t.emoji}</span>
                 )}
@@ -319,7 +320,7 @@ export default function RarityRanking({ player }: Props) {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden shrink-0"
                   style={{ background: 'rgba(255,255,255,0.05)' }}>
                   {t.iconUrl ? (
-                    <img src={t.iconUrl} alt={t.label} className="w-7 h-7 object-contain" />
+                    <img src={t.iconUrl} alt={t.label} width={28} height={28} loading="lazy" decoding="async" className="w-7 h-7 object-contain" />
                   ) : (
                     <span className="text-base">{t.emoji}</span>
                   )}

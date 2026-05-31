@@ -1,5 +1,6 @@
 ﻿'use client';
 
+/* eslint-disable @next/next/no-img-element -- asset de jeu volontairement en <img> (évite le coût + la surface de vuln de l'optimiseur d'images Vercel, cf. npm audit) ; perf via loading=lazy + dimensions. */
 import { Player, AccountValue } from '@/types/clash';
 
 interface BattleCardProps {
@@ -23,7 +24,7 @@ const GRADE_CONFIG: Record<Grade, {
   'S+': {
     primary: '#FF0050', secondary: '#FF6B9D', glowRgb: '255,0,80',
     bg: 'linear-gradient(160deg, #0e0005 0%, #200010 40%, #160008 70%, #0e0005 100%)',
-    border: 'rgba(255,0,80,0.6)', title: 'APEX LEGEND', rank: 'TOP 0.1% MONDIAL', icon: 'u{1F451}', auraOpacity: 0.22,
+    border: 'rgba(255,0,80,0.6)', title: 'APEX LEGEND', rank: 'TOP 0.1% MONDIAL', icon: '👑', auraOpacity: 0.22,
   },
   S: {
     primary: '#FBBF24', secondary: '#FDE68A', glowRgb: '251,191,36',
@@ -86,6 +87,10 @@ function GradeCharacter({ grade, glowRgb }: { grade: Grade; glowRgb: string }) {
       <img
         src={char.src}
         alt={char.label}
+        width={130}
+        height={130}
+        loading="lazy"
+        decoding="async"
         style={{
           width: '100%',
           height: '100%',

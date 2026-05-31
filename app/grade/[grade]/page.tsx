@@ -3,10 +3,21 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 /* ─── Types ─── */
-type Grade = 'S' | 'A' | 'B' | 'C' | 'D';
+type Grade = 'S+' | 'S' | 'A' | 'B' | 'C' | 'D';
 
 /* ─── Static data ─── */
-const GRADES: Grade[] = ['S', 'A', 'B', 'C', 'D'];
+const GRADES: Grade[] = ['S+', 'S', 'A', 'B', 'C', 'D'];
+
+/* Slug <-> Grade : "S+" ne passe pas proprement dans une URL, on utilise "S-plus". */
+function toSlug(g: Grade): string {
+  return g === 'S+' ? 'S-plus' : g;
+}
+function fromSlug(slug: string): Grade | null {
+  const up = slug.toUpperCase();
+  if (up === 'S-PLUS' || up === 'SPLUS') return 'S+';
+  if (up === 'S' || up === 'A' || up === 'B' || up === 'C' || up === 'D') return up as Grade;
+  return null;
+}
 
 const GRADE_DATA: Record<Grade, {
   color: string;
@@ -22,6 +33,28 @@ const GRADE_DATA: Record<Grade, {
   archetypes: string[];
   criteria: string[];
 }> = {
+  'S+': {
+    color: '#FF0050',
+    bgGradient: 'from-rose-500/20 to-rose-600/5',
+    borderColor: 'border-rose-500/40',
+    glowColor: 'rgba(255,0,80,0.18)',
+    tagline: 'APEX LEGEND',
+    emoji: '👑',
+    score: '950+',
+    topPercent: 'Top 0.1%',
+    valueRange: '5 000 €+',
+    description:
+      'Le grade S+ — APEX LEGEND — est le tout sommet de FlexRoyale, réservé à une fraction infime de joueurs. Collection quasi-parfaite, évolutions et Héros débloqués, des années de jeu et un investissement conséquent. Moins de 0,1 % des comptes atteignent ce niveau. À ce stade, tu ne flex plus : tu domines.',
+    archetypes: ['GOATed Whale 🐋', 'End-Game Elite 👑'],
+    criteria: [
+      'Score FlexRoyale ≥ 950 / 1000',
+      'Collection quasi-complète au niveau maximum',
+      'Trophées au sommet du ladder (record très élevé)',
+      'Évolutions et Héros largement débloqués',
+      'Profil Ranked au sommet (Ultimate Champion)',
+      'Compte estimé à plusieurs milliers d\'euros',
+    ],
+  },
   S: {
     color: '#F59E0B',
     bgGradient: 'from-amber-500/20 to-amber-600/5',
@@ -29,7 +62,7 @@ const GRADE_DATA: Record<Grade, {
     glowColor: 'rgba(245,158,11,0.15)',
     tagline: 'LÉGENDAIRE',
     emoji: '✨',
-    score: '750+',
+    score: '750 – 949',
     topPercent: 'Top 1%',
     valueRange: '1 000 € – 5 000 €+',
     description:
@@ -127,7 +160,7 @@ const GRADE_DATA: Record<Grade, {
 
 /* ─── generateStaticParams ─── */
 export function generateStaticParams() {
-  return GRADES.map((grade) => ({ grade }));
+  return GRADES.map((grade) => ({ grade: toSlug(grade) }));
 }
 
 /* ─── Metadata ─── */
@@ -137,8 +170,8 @@ export async function generateMetadata({
   params: Promise<{ grade: string }>;
 }): Promise<Metadata> {
   const { grade } = await params;
-  const g = grade.toUpperCase() as Grade;
-  if (!GRADES.includes(g)) return {};
+  const g = fromSlug(grade);
+  if (!g) return {};
 
   const d = GRADE_DATA[g];
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://flexroyale.vercel.app').trim();
@@ -149,7 +182,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Grade ${g} Clash Royale — ${d.emoji} ${d.tagline}`,
       description: `${d.topPercent} des joueurs mondiaux. Score ${d.score}. Compte estimé ${d.valueRange}. Découvre si tu as le grade ${g}.`,
-      url: `${siteUrl}/grade/${g}`,
+      url: `${siteUrl}/grade/${toSlug(g)}`,
       siteName: 'FlexRoyale',
       images: [{ url: `${siteUrl}/og-default.png`, width: 1200, height: 630 }],
       type: 'website',
@@ -160,7 +193,7 @@ export async function generateMetadata({
       description: `${d.topPercent} des joueurs. Score ${d.score}. Compte estimé ${d.valueRange}.`,
     },
     alternates: {
-      canonical: `${siteUrl}/grade/${g}`,
+      canonical: `${siteUrl}/grade/${toSlug(g)}`,
     },
   };
 }
@@ -172,8 +205,8 @@ export default async function GradePage({
   params: Promise<{ grade: string }>;
 }) {
   const { grade } = await params;
-  const g = grade.toUpperCase() as Grade;
-  if (!GRADES.includes(g)) notFound();
+  const g = fromSlug(grade);
+  if (!g) notFound();
 
   const d = GRADE_DATA[g];
 
@@ -329,7 +362,7 @@ export default async function GradePage({
           <div>
             {prevGrade && (
               <Link
-                href={`/grade/${prevGrade}`}
+                href={`/grade/${toSlug(prevGrade)}`}
                 className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
               >
                 ← Grade {prevGrade}
@@ -345,8 +378,8 @@ export default async function GradePage({
               {GRADES.map((gr) => (
                 <Link
                   key={gr}
-                  href={`/grade/${gr}`}
-                  className={`w-7 h-7 rounded-lg text-xs font-black flex items-center justify-center border transition-all ${
+                  href={`/grade/${toSlug(gr)}`}
+                  className={`min-w-7 h-7 px-1 rounded-lg text-xs font-black flex items-center justify-center border transition-all ${
                     gr === g ? 'border-white/20 scale-110' : 'border-white/5 hover:border-white/20'
                   }`}
                   style={
@@ -363,7 +396,7 @@ export default async function GradePage({
           <div className="text-right">
             {nextGrade && (
               <Link
-                href={`/grade/${nextGrade}`}
+                href={`/grade/${toSlug(nextGrade)}`}
                 className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2 justify-end"
               >
                 <span className="text-xs text-white/20">
