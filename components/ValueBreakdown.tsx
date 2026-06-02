@@ -13,15 +13,16 @@ interface ValueBreakdownProps {
 
 type BreakdownKey = keyof AccountValue['breakdown'];
 
-const CATEGORY_COLORS: Record<BreakdownKey, { bar: string; glow: string }> = {
-  cards:      { bar: '#8B5CF6', glow: 'rgba(139,92,246,0.3)' },
-  evolutions: { bar: '#FBBF24', glow: 'rgba(251,191,36,0.3)' },
-  heroes:     { bar: '#10B981', glow: 'rgba(16,185,129,0.3)' },
-  kingLevel:  { bar: '#F59E0B', glow: 'rgba(245,158,11,0.3)' },
-  trophies:   { bar: '#EAB308', glow: 'rgba(234,179,8,0.3)' },
-  cosmetics:  { bar: '#EC4899', glow: 'rgba(236,72,153,0.3)' },
-  anciennete: { bar: '#2563EB', glow: 'rgba(37,99,235,0.3)' },
-  ranked:     { bar: '#F97316', glow: 'rgba(249,115,22,0.3)' },
+// Palette terreuse + icone Bootstrap par categorie (aplats, pas de glow, pas de violet)
+const CATEGORY_META: Record<BreakdownKey, { bar: string; icon: string }> = {
+  cards:      { bar: '#6E8C9E', icon: 'bi-collection-fill' },
+  evolutions: { bar: '#C8902E', icon: 'bi-lightning-charge-fill' },
+  heroes:     { bar: '#8A8B4A', icon: 'bi-star-fill' },
+  kingLevel:  { bar: '#C0573B', icon: 'bi-award-fill' },
+  trophies:   { bar: '#C8902E', icon: 'bi-trophy-fill' },
+  cosmetics:  { bar: '#9C7A5B', icon: 'bi-palette-fill' },
+  anciennete: { bar: '#8A847A', icon: 'bi-hourglass-split' },
+  ranked:     { bar: '#C0573B', icon: 'bi-bar-chart-fill' },
 };
 
 export default function ValueBreakdown({ breakdown, totalEuros }: ValueBreakdownProps) {
@@ -39,28 +40,26 @@ export default function ValueBreakdown({ breakdown, totalEuros }: ValueBreakdown
       {sortedItems.map(([key, item]) => {
         const pct = totalEuros > 0 ? Math.round((item.value / totalEuros) * 100) : 0;
         const isOpen = openKey === key;
-        const colors = CATEGORY_COLORS[key];
+        const meta = CATEGORY_META[key];
         return (
           <div
             key={key}
             className="glass-card overflow-hidden transition-all duration-200"
-            style={isOpen ? { borderColor: `${colors.bar}44` } : undefined}
+            style={isOpen ? { borderColor: meta.bar } : undefined}
           >
             <button
               className="w-full flex items-center justify-between p-4 transition-colors"
               onClick={() => setOpenKey(isOpen ? null : key)}
               style={{ background: 'transparent' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(236,230,216,0.04)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <span className="text-base shrink-0">{item.label.split(' ')[0]}</span>
-                <span className="text-white text-sm font-medium truncate">
-                  {item.label.split(' ').slice(1).join(' ')}
-                </span>
+                <i className={`bi ${meta.icon} shrink-0`} aria-hidden="true" style={{ color: meta.bar }} />
+                <span className="text-white text-sm font-medium truncate">{item.label}</span>
               </div>
               <div className="flex items-center gap-3 ml-2 shrink-0">
-                <span className="font-gaming font-bold text-sm" style={{ color: colors.bar }}>
+                <span className="font-gaming font-bold text-sm" style={{ color: meta.bar }}>
                   {formatEuros(item.value)}
                 </span>
                 <span className="text-gray-600 text-xs w-8 text-right">{pct}%</span>
@@ -72,20 +71,16 @@ export default function ValueBreakdown({ breakdown, totalEuros }: ValueBreakdown
             </button>
 
             <div className="px-4 pb-3">
-              <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+              <div className="h-1 overflow-hidden" style={{ background: 'rgba(236,230,216,0.08)' }}>
                 <div
-                  className="h-full rounded-full transition-all duration-700"
-                  style={{
-                    width: `${pct}%`,
-                    background: colors.bar,
-                    boxShadow: `0 0 8px ${colors.glow}`,
-                  }}
+                  className="h-full transition-all duration-700"
+                  style={{ width: `${pct}%`, background: meta.bar }}
                 />
               </div>
             </div>
 
             {isOpen && (
-              <div className="px-4 pb-4 pt-1" style={{ borderTop: `1px solid rgba(255,255,255,0.06)` }}>
+              <div className="px-4 pb-4 pt-1" style={{ borderTop: '1px solid rgba(236,230,216,0.08)' }}>
                 <p className="text-gray-400 text-sm">{item.detail}</p>
                 <p className="text-gray-600 text-xs mt-1">
                   ≈ {formatGems(item.gems)} {t.breakdownGems}

@@ -17,14 +17,15 @@ export async function GET(request: NextRequest) {
   const topPercent = searchParams.get('topPercent') || '';
 
   const gradeColors: Record<string, string> = {
-    S: '#FBBF24',
-    A: '#10B981',
-    B: '#2563EB',
-    C: '#8B5CF6',
-    D: '#6B7280',
+    'S+': '#C0573B',
+    'S': '#C8902E',
+    'A': '#8A8B4A',
+    'B': '#9C7A5B',
+    'C': '#6E8C9E',
+    'D': '#8A847A',
   };
 
-  const gradeColor = gradeColors[grade] || '#6B7280';
+  const gradeColor = gradeColors[grade] || '#9C7A5B';
   const valueFormatted = new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR',
@@ -57,144 +58,249 @@ export async function GET(request: NextRequest) {
       type: 'div',
       props: {
         style: {
-          background: 'linear-gradient(135deg, #07070E 0%, #0D1B3E 50%, #07070E 100%)',
+          background: '#1C1A17',
           width: '1200px',
           height: '630px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          color: '#ECE6D8',
           padding: '40px',
           fontFamily: 'Inter, sans-serif',
           position: 'relative',
         },
         children: [
-          // Logo
-          {
-            type: 'div',
-            props: {
-              style: { fontSize: '28px', color: '#2563EB', marginBottom: '8px', fontWeight: 700 },
-              children: '⚔️ FlexRoyale',
-            },
-          },
-          // Player name
-          {
-            type: 'div',
-            props: {
-              style: { fontSize: '52px', fontWeight: 900, marginBottom: '4px' },
-              children: name,
-            },
-          },
-          // Grade badge
-          {
-            type: 'div',
-            props: {
-              style: {
-                background: gradeColor,
-                borderRadius: '16px',
-                padding: '8px 32px',
-                fontSize: '40px',
-                fontWeight: 900,
-                marginBottom: '24px',
-                color: grade === 'S' ? '#000' : '#fff',
-              },
-              children: `Grade ${grade}`,
-            },
-          },
-          // Value
-          {
-            type: 'div',
-            props: {
-              style: { fontSize: '72px', fontWeight: 900, color: '#FBBF24', marginBottom: '8px' },
-              children: valueFormatted,
-            },
-          },
-          // Subtitle
-          {
-            type: 'div',
-            props: {
-              style: { fontSize: '22px', color: '#93C5FD', marginBottom: '24px' },
-              children: 'Valeur estimée du compte',
-            },
-          },
-          // Stats row
-          {
-            type: 'div',
-            props: {
-              style: { display: 'flex', gap: '40px', fontSize: '20px' },
-              children: [
-                {
-                  type: 'div',
-                  props: {
-                    style: { textAlign: 'center' },
-                    children: [
-                      {
-                        type: 'div',
-                        props: {
-                          style: { color: '#FBBF24', fontWeight: 700, fontSize: '28px' },
-                          children: trophiesFormatted,
-                        },
-                      },
-                      {
-                        type: 'div',
-                        props: { style: { color: '#93C5FD' }, children: 'Trophées' },
-                      },
-                    ],
-                  },
-                },
-                {
-                  type: 'div',
-                  props: {
-                    style: { textAlign: 'center' },
-                    children: [
-                      {
-                        type: 'div',
-                        props: {
-                          style: { color: '#FBBF24', fontWeight: 700, fontSize: '28px' },
-                          children: archetype,
-                        },
-                      },
-                      {
-                        type: 'div',
-                        props: { style: { color: '#93C5FD' }, children: 'Profil' },
-                      },
-                    ],
-                  },
-                },
-                topPercent ? {
-                  type: 'div',
-                  props: {
-                    style: { textAlign: 'center' },
-                    children: [
-                      {
-                        type: 'div',
-                        props: {
-                          style: { color: '#FBBF24', fontWeight: 700, fontSize: '28px' },
-                          children: topPercent,
-                        },
-                      },
-                      {
-                        type: 'div',
-                        props: { style: { color: '#93C5FD' }, children: 'Mondial' },
-                      },
-                    ],
-                  },
-                } : { type: 'div', props: { children: '' } },
-              ],
-            },
-          },
-          // Footer
+          // Left accent stripe
           {
             type: 'div',
             props: {
               style: {
                 position: 'absolute',
-                bottom: '20px',
-                fontSize: '14px',
-                color: '#1D4ED8',
+                left: '0',
+                top: '0',
+                bottom: '0',
+                width: '16px',
+                background: gradeColor,
               },
-              children: `${siteDomain} — Not affiliated with Supercell`,
+            },
+          },
+          // Card Container
+          {
+            type: 'div',
+            props: {
+              style: {
+                background: '#26231E',
+                border: '1px solid #423C32',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '1000px',
+                height: '490px',
+                padding: '40px',
+                position: 'relative',
+              },
+              children: [
+                // Top header
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '20px',
+                    },
+                    children: [
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            fontSize: '20px',
+                            color: '#A39B8B',
+                            fontWeight: 700,
+                            letterSpacing: '4px',
+                          },
+                          children: 'FLEXROYALE',
+                        },
+                      },
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            border: `1px solid ${gradeColor}`,
+                            background: `${gradeColor}20`,
+                            color: gradeColor,
+                            fontSize: '16px',
+                            fontWeight: 700,
+                            letterSpacing: '2px',
+                            padding: '4px 12px',
+                          },
+                          children: `GRADE ${grade}`,
+                        },
+                      },
+                    ],
+                  },
+                },
+                // Player Name
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: '60px',
+                      fontWeight: 900,
+                      color: '#ECE6D8',
+                      textTransform: 'uppercase',
+                      marginBottom: '10px',
+                    },
+                    children: name,
+                  },
+                },
+                // Archetype Row
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: '20px',
+                      color: gradeColor,
+                      fontWeight: 700,
+                      letterSpacing: '2px',
+                      textTransform: 'uppercase',
+                      marginBottom: '40px',
+                    },
+                    children: archetype,
+                  },
+                },
+                // Value and Rank Section
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: '20px',
+                      marginBottom: '40px',
+                    },
+                    children: [
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            fontSize: '84px',
+                            fontWeight: 900,
+                            color: '#C8902E',
+                            lineHeight: 1,
+                          },
+                          children: valueFormatted,
+                        },
+                      },
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            fontSize: '22px',
+                            color: '#A39B8B',
+                          },
+                          children: 'Valeur estimee',
+                        },
+                      },
+                    ],
+                  },
+                },
+                // Divider
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      height: '1px',
+                      background: '#423C32',
+                      width: '100%',
+                      marginBottom: '30px',
+                    },
+                  },
+                },
+                // Stats row
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      gap: '60px',
+                    },
+                    children: [
+                      {
+                        type: 'div',
+                        props: {
+                          style: { display: 'flex', flexDirection: 'column' },
+                          children: [
+                            {
+                              type: 'div',
+                              props: {
+                                style: { color: '#ECE6D8', fontWeight: 700, fontSize: '28px' },
+                                children: trophiesFormatted,
+                              },
+                            },
+                            {
+                              type: 'div',
+                              props: { style: { color: '#A39B8B', fontSize: '14px', letterSpacing: '1px', textTransform: 'uppercase' }, children: 'Trophees' },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        type: 'div',
+                        props: {
+                          style: { display: 'flex', flexDirection: 'column' },
+                          children: [
+                            {
+                              type: 'div',
+                              props: {
+                                style: { color: '#ECE6D8', fontWeight: 700, fontSize: '28px' },
+                                children: grade,
+                              },
+                            },
+                            {
+                              type: 'div',
+                              props: { style: { color: '#A39B8B', fontSize: '14px', letterSpacing: '1px', textTransform: 'uppercase' }, children: 'Grade' },
+                            },
+                          ],
+                        },
+                      },
+                      topPercent ? {
+                        type: 'div',
+                        props: {
+                          style: { display: 'flex', flexDirection: 'column' },
+                          children: [
+                            {
+                              type: 'div',
+                              props: {
+                                style: { color: '#ECE6D8', fontWeight: 700, fontSize: '28px' },
+                                children: topPercent,
+                              },
+                            },
+                            {
+                              type: 'div',
+                              props: { style: { color: '#A39B8B', fontSize: '14px', letterSpacing: '1px', textTransform: 'uppercase' }, children: 'Mondial' },
+                            },
+                          ],
+                        },
+                      } : null,
+                    ].filter(Boolean),
+                  },
+                },
+              ],
+            },
+          },
+          // Footnote
+          {
+            type: 'div',
+            props: {
+              style: {
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '14px',
+                color: '#8A847A',
+              },
+              children: `${siteDomain} - Not affiliated with Supercell`,
             },
           },
         ],

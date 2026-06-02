@@ -1,69 +1,68 @@
-﻿export type Grade = 'S+' | 'S' | 'A' | 'B' | 'C' | 'D';
+export type Grade = 'S+' | 'S' | 'A' | 'B' | 'C' | 'D';
 
 export interface GradeConfig {
   label: string;
-  color: string;
-  bgColor: string;
-  borderColor: string;
-  glowColor: string;
+  color: string;        // hex terreux (aplat)
+  bgColor: string;      // classe tailwind
+  borderColor: string;  // classe tailwind
+  glowColor: string;    // conserve pour compat (non utilise comme glow)
   tagline: string;
-  emoji: string;
+  icon: string;         // classe Bootstrap Icons (remplace l'emoji)
 }
 
 export const GRADE_CONFIG: Record<Grade, GradeConfig> = {
   'S+': {
     label: 'S+',
-    color: '#FF0050',
-    bgColor: 'bg-rose-600',
-    borderColor: 'border-rose-400',
-    glowColor: 'shadow-rose-500/50',
+    color: '#C0573B',
+    bgColor: 'bg-terracotta',
+    borderColor: 'border-terracotta',
+    glowColor: '',
     tagline: 'APEX LEGEND',
-    emoji: '👑',
+    icon: 'bi-trophy-fill',
   },
-
   S: {
     label: 'S',
-    color: '#F59E0B',
-    bgColor: 'bg-amber-500',
-    borderColor: 'border-amber-400',
-    glowColor: 'shadow-amber-500/50',
-    tagline: 'LÉGENDAIRE',
-    emoji: '✨',
+    color: '#C8902E',
+    bgColor: 'bg-ochre',
+    borderColor: 'border-ochre',
+    glowColor: '',
+    tagline: 'LEGENDAIRE',
+    icon: 'bi-star-fill',
   },
   A: {
     label: 'A',
-    color: '#10B981',
-    bgColor: 'bg-emerald-500',
-    borderColor: 'border-emerald-400',
-    glowColor: 'shadow-emerald-500/50',
+    color: '#8A8B4A',
+    bgColor: 'bg-olive',
+    borderColor: 'border-olive',
+    glowColor: '',
     tagline: 'ELITE',
-    emoji: '🔥',
+    icon: 'bi-fire',
   },
   B: {
     label: 'B',
-    color: '#3B82F6',
-    bgColor: 'bg-blue-500',
-    borderColor: 'border-blue-400',
-    glowColor: 'shadow-blue-500/50',
+    color: '#9C7A5B',
+    bgColor: 'bg-clay',
+    borderColor: 'border-clay',
+    glowColor: '',
     tagline: 'SOLIDE',
-    emoji: '⚔️',
+    icon: 'bi-shield-fill',
   },
   C: {
     label: 'C',
-    color: '#8B5CF6',
-    bgColor: 'bg-violet-500',
-    borderColor: 'border-violet-400',
-    glowColor: 'shadow-violet-500/50',
+    color: '#6E8C9E',
+    bgColor: 'bg-dustyblue',
+    borderColor: 'border-dustyblue',
+    glowColor: '',
     tagline: 'EN PROGRESSION',
-    emoji: '📈',
+    icon: 'bi-graph-up-arrow',
   },
   D: {
     label: 'D',
-    color: '#6B7280',
-    bgColor: 'bg-gray-500',
-    borderColor: 'border-gray-400',
-    glowColor: 'shadow-gray-500/50',
-    tagline: 'NPC MATERIAL 💀',
-    emoji: '😅',
+    color: '#8A847A',
+    bgColor: 'bg-stone',
+    borderColor: 'border-stone',
+    glowColor: '',
+    tagline: 'EARLY GAME',
+    icon: 'bi-dash-circle',
   },
 };

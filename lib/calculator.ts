@@ -152,12 +152,12 @@ function getArchetype(player: Player, score: number): { archetype: string; emoji
   const maxCards = player.cards?.filter(c => c.level >= c.maxLevel).length || 0;
   const evolvedCards = player.cards?.filter(c => (c.evolutionLevel || 0) > 0).length || 0;
 
-  if (score >= 750 && maxCards > 50) return { archetype: 'GOATed Whale', emoji: '🐋' };
-  if (score >= 600) return { archetype: 'End-Game Elite', emoji: '👑' };
-  if (score >= 450 && evolvedCards > 20) return { archetype: 'Evo Collector', emoji: '⚡' };
-  if (score >= 350) return { archetype: 'High Ladder Grinder', emoji: '🏆' };
-  if (score >= 200) return { archetype: 'Mid-Game Solid', emoji: '⚔️' };
-  return { archetype: 'Early Journey', emoji: '🌱' };
+  if (score >= 750 && maxCards > 50) return { archetype: 'GOATed Whale', emoji: '' };
+  if (score >= 600) return { archetype: 'End-Game Elite', emoji: '' };
+  if (score >= 450 && evolvedCards > 20) return { archetype: 'Evo Collector', emoji: '' };
+  if (score >= 350) return { archetype: 'High Ladder Grinder', emoji: '' };
+  if (score >= 200) return { archetype: 'Mid-Game Solid', emoji: '' };
+  return { archetype: 'Early Journey', emoji: '' };
 }
 
 export function calculateAccountValue(player: Player): AccountValue {
@@ -195,14 +195,14 @@ export function calculateAccountValue(player: Player): AccountValue {
     archetype,
     archetypeEmoji,
     breakdown: {
-      cards:      { value: gemsToEuros(cardsData.gems),      gems: cardsData.gems,      label: '🃏 Niveaux des cartes',    detail: cardsData.detail },
-      evolutions: { value: gemsToEuros(evolutionsData.gems), gems: evolutionsData.gems, label: '⚡ Évolutions',            detail: evolutionsData.detail },
-      heroes:     { value: gemsToEuros(heroesData.gems),     gems: heroesData.gems,     label: '🦸 Héros',                 detail: heroesData.detail },
-      kingLevel:  { value: gemsToEuros(kingLevelData.gems),  gems: kingLevelData.gems,  label: '👑 King Level & XP',       detail: kingLevelData.detail },
-      trophies:   { value: gemsToEuros(trophiesData.gems),   gems: trophiesData.gems,   label: '🏆 Trophées',              detail: trophiesData.detail },
-      cosmetics:  { value: gemsToEuros(cosmeticsData.gems),  gems: cosmeticsData.gems,  label: '🎨 Cosmétiques & Badges',  detail: cosmeticsData.detail },
-      anciennete: { value: gemsToEuros(ancienneteData.gems), gems: ancienneteData.gems, label: '⏳ Ancienneté & Temps',    detail: ancienneteData.detail },
-      ranked:     { value: gemsToEuros(rankedData.gems),     gems: rankedData.gems,     label: '🏅 Ranked Mode',           detail: rankedData.detail },
+      cards:      { value: gemsToEuros(cardsData.gems),      gems: cardsData.gems,      label: 'Niveaux des cartes',    detail: cardsData.detail },
+      evolutions: { value: gemsToEuros(evolutionsData.gems), gems: evolutionsData.gems, label: 'Évolutions',            detail: evolutionsData.detail },
+      heroes:     { value: gemsToEuros(heroesData.gems),     gems: heroesData.gems,     label: 'Héros',                 detail: heroesData.detail },
+      kingLevel:  { value: gemsToEuros(kingLevelData.gems),  gems: kingLevelData.gems,  label: 'King Level & XP',       detail: kingLevelData.detail },
+      trophies:   { value: gemsToEuros(trophiesData.gems),   gems: trophiesData.gems,   label: 'Trophées',              detail: trophiesData.detail },
+      cosmetics:  { value: gemsToEuros(cosmeticsData.gems),  gems: cosmeticsData.gems,  label: 'Cosmétiques & Badges',  detail: cosmeticsData.detail },
+      anciennete: { value: gemsToEuros(ancienneteData.gems), gems: ancienneteData.gems, label: 'Ancienneté & Temps',    detail: ancienneteData.detail },
+      ranked:     { value: gemsToEuros(rankedData.gems),     gems: rankedData.gems,     label: 'Ranked Mode',           detail: rankedData.detail },
     },
   };
 }

@@ -4,26 +4,32 @@
 Next.js 14 App Router · TypeScript · Tailwind CSS  
 Estimation monétaire d'un compte Clash Royale.  
 Live : https://flexroyale.vercel.app
+GitHub : https://github.com/ark0s1/flexroyale
+
+## Relation Claude / Codex
+Claude Cowork reste le flux principal du projet.
+Codex est seulement le plan B quand Claude n'a plus de tokens, perd le contexte, ou quand l'utilisateur veut une verification/reprise cote Codex.
+Pour rendre les reprises propres, garder `TASKS.md` a jour avec l'etat exact des chantiers en cours.
 
 ## Chemins importants
-- **Projet** : `C:\Users\ysanc\AppData\Roaming\Claude\local-agent-mode-sessions\2c8be573-7893-40e5-8590-3c2be6ba1636\ca4525b0-558a-4a81-ba3d-e823fe81db50\local_c66f473e-6edf-4a08-8a2d-2b2024da740f\outputs\flexroyale`
+- **Projet actif** : `C:\Users\ysanc\Downloads\flexroyale-rebuild`
+- **Assets utilisateur / Cowork** : `C:\Users\ysanc\Downloads\Claude Battle cards`
 - **Node** : `C:\Program Files\nodejs\node.exe`
 - **Vercel CLI** : `C:\Users\ysanc\AppData\Roaming\npm\vercel.cmd`
 - **Bat de déploiement** : `C:\Users\ysanc\Desktop\deploy_flex.bat`
 
-## Architecture CR API (IMPORTANT — changement majeur)
-Le proxy Fly.io (`cr-proxy-flexroyale.fly.dev`) a été **abandonné** (trial expiré).  
-L'app appelle maintenant le CR API **directement** depuis Vercel :
-- `lib/api.ts` → `https://api.clashroyale.com/v1` avec `Authorization: Bearer $CR_API_TOKEN`
-- Le token est stocké en variable d'environnement Vercel : `CR_API_TOKEN`
-- La clé CR doit avoir IP whitelist = `0.0.0.0/0` (Vercel a des IPs dynamiques)
+## Architecture CR API
+L'app appelle le proxy Fly.io, qui forward vers l'API Clash Royale :
+- `lib/api.ts` → `https://cr-proxy-flexroyale.fly.dev/v1`
+- Le proxy (`cr-proxy-flexroyale`) garde le token CR côté Fly.io
+- Ne pas remplacer par des appels directs Vercel sans verifier le probleme d'IP dynamique
 
 ## Déploiement — AUTONOME, jamais demander à l'utilisateur
 Toujours déployer soi-même. Commande PowerShell qui fonctionne :
 
 ```powershell
 $env:PATH = "C:\Program Files\nodejs;C:\Users\ysanc\AppData\Roaming\npm;" + $env:PATH
-Set-Location "C:\Users\ysanc\AppData\Roaming\Claude\local-agent-mode-sessions\2c8be573-7893-40e5-8590-3c2be6ba1636\ca4525b0-558a-4a81-ba3d-e823fe81db50\local_c66f473e-6edf-4a08-8a2d-2b2024da740f\outputs\flexroyale"
+Set-Location "C:\Users\ysanc\Downloads\flexroyale-rebuild"
 Start-Process "C:\Users\ysanc\AppData\Roaming\npm\vercel.cmd" -ArgumentList "deploy","--prod","--yes" -WorkingDirectory (Get-Location).Path -RedirectStandardOutput "C:\Users\ysanc\Desktop\vercel_out.txt" -RedirectStandardError "C:\Users\ysanc\Desktop\vercel_err.txt" -NoNewWindow -Wait
 Get-Content "C:\Users\ysanc\Desktop\vercel_out.txt","C:\Users\ysanc\Desktop\vercel_err.txt"
 ```
@@ -43,8 +49,8 @@ echo "VALEUR" | & "C:\Users\ysanc\AppData\Roaming\npm\vercel.cmd" env add NOM_VA
   $env:PATH = "C:\Program Files\nodejs;C:\Users\ysanc\AppData\Roaming\npm;" + $env:PATH
   ```
 - Pour les commandes longues : rediriger output vers fichier puis lire
-- Chemin sandbox bash : `/sessions/.../mnt/outputs/flexroyale`
-- Chemin Windows : `C:\Users\ysanc\...\outputs\flexroyale`
+- Chemin Windows actif : `C:\Users\ysanc\Downloads\flexroyale-rebuild`
+- Codex cloud clone generalement le repo dans `/repo`
 
 ## Règles d'édition de code
 - **Toujours** `Read` un fichier juste avant de l'éditer, même s'il a été lu plus tôt
@@ -57,12 +63,12 @@ echo "VALEUR" | & "C:\Users\ysanc\AppData\Roaming\npm\vercel.cmd" env add NOM_VA
 3. Ne jamais déployer si le build échoue
 
 ## Gestion du contexte
-Quand le contexte approche la limite, écrire un résumé structuré dans :
-`outputs/SESSION_STATE.md`
+Quand le contexte approche la limite, mettre a jour :
+`TASKS.md`
 
 Inclure : tâche en cours, fichiers modifiés (chemins complets + changements), prochaine action, URL live, bugs connus.
 
-Au démarrage d'une nouvelle session : lire SESSION_STATE.md en premier.
+Au démarrage d'une nouvelle session : lire `AGENTS.md` puis `TASKS.md` en premier.
 
 ## Autonomie utilisateur
 Cet utilisateur veut le maximum d'autonomie :
@@ -95,3 +101,14 @@ const GEMS_PER_EURO = 130;
 - Next.js 14 App Router, TypeScript, Tailwind CSS
 - Déployé sur Vercel (projet: grouparkus-1706s-projects/flexroyale)
 - Images cartes CDN: https://api-assets.clashroyale.com/cards/300/{hash}.png
+
+## Design / UI — règles
+- Style minimaliste inspiré du Bauhaus : formes simples, géométriques, fonctionnelles.
+- Palette de tons terreux (ocre, terracotta, sable, brun, vert olive...). Pas de violet.
+- Pas de dégradés : aplats de couleur uniquement.
+- Pas d'emojis dans l'interface utilisateur ni dans les commentaires de code.
+- Pas de bords arrondis (border-radius: 0) sauf indication explicite du contraire.
+- Icônes via une bibliothèque (Bootstrap Icons : https://icons.getbootstrap.com/), jamais d'emojis.
+- Important : ces règles s'appliquent au nouveau code. Le design ACTUEL de FlexRoyale est l'opposé
+  (néon, dégradés, violet sur le grade C, emojis partout, coins arrondis). Re-skinner l'app existante
+  est un chantier séparé, à valider avant exécution.

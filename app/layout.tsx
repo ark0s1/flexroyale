@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'FlexRoyale' }],
   openGraph: {
     title: 'FlexRoyale — Combien vaut ton compte Clash Royale ?',
-    description: 'Calcule la valeur de ton compte CR en euros. Flex hard. 🔥',
+    description: 'Calcule la valeur de ton compte CR en euros. Flex hard.',
     url: siteUrl,
     siteName: 'FlexRoyale',
     images: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'FlexRoyale — Combien vaut ton compte Clash Royale ?',
-    description: 'Calcule la valeur de ton compte CR en euros. Flex hard. 🔥',
+    description: 'Calcule la valeur de ton compte CR en euros. Flex hard.',
     images: [`${siteUrl}/og-default.png`],
   },
   icons: {
@@ -53,7 +53,7 @@ export default function RootLayout({
 
   return (
     <html lang="fr">
-      <body className="bg-[#07070E] text-white antialiased">
+      <body className="bg-espresso text-bone antialiased">
         <I18nProvider>
           <LanguageSwitcher />
           {children}

@@ -38,15 +38,13 @@ export default function FlexGrade({ grade, score, size = 'md', showTagline = tru
       <div
         className={cn(
           sizes.badge,
-          'rounded-2xl flex items-center justify-center font-black border-2 font-gaming tracking-wider',
+          'flex items-center justify-center font-black border-2 font-gaming tracking-wider',
           (grade === 'S' || grade === 'S+') ? 'animate-pulse-gold' : ''
         )}
         style={{
-          background: `${config.color}18`,
-          borderColor: `${config.color}66`,
+          background: `${config.color}1A`,
+          borderColor: config.color,
           color: config.color,
-          boxShadow: `0 0 25px ${config.color}44, inset 0 0 20px ${config.color}11`,
-          textShadow: `0 0 20px ${config.color}`,
         }}
       >
         {config.label}

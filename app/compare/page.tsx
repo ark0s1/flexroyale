@@ -3,7 +3,6 @@
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Trophy, Swords } from 'lucide-react';
 import { PlayerApiResponse } from '@/types/clash';
 import { formatEuros, formatNumber, getWinRate } from '@/lib/utils';
 import FlexGrade from '@/components/FlexGrade';
@@ -43,7 +42,7 @@ function CompareContent() {
     }
   }
 
-  const w = data1 && data2
+  const winnerSlot = data1 && data2
     ? (data1.accountValue.totalEuros >= data2.accountValue.totalEuros ? 1 : 2)
     : null;
 
@@ -51,34 +50,26 @@ function CompareContent() {
     ? (data1.accountValue.totalEuros / data2.accountValue.totalEuros).toFixed(1)
     : null;
 
-  function FunMessage() {
+  function ComparisonMessage() {
     if (!data1 || !data2) return null;
-    const wData = w === 1 ? data1 : data2;
-    const lData = w === 1 ? data2 : data1;
+    const winner = winnerSlot === 1 ? data1.player.name : data2.player.name;
+    const loser = winnerSlot === 1 ? data2.player.name : data1.player.name;
     const r = parseFloat(ratio || '1');
-    const winner = wData.player.name;
-    const loser = lData.player.name;
 
-    if (r >= 5) return <p className="font-gaming text-amber-400 font-bold text-lg tracking-wide">🐋 {t.compareMsg5x.replace('{winner}', winner).replace('{ratio}', String(r)).replace('{loser}', loser)}</p>;
-    if (r >= 2) return <p className="font-gaming text-emerald-400 font-bold text-lg tracking-wide">🔥 {t.compareMsg2x.replace('{winner}', winner).replace('{loser}', loser)}</p>;
-    if (r >= 1.2) return <p className="font-gaming text-blue-400 font-bold text-lg tracking-wide">⚔️ {t.compareMsg1_2x.replace('{winner}', winner).replace('{loser}', loser)}</p>;
-    return <p className="font-gaming text-purple-400 font-bold text-lg tracking-wide">🤝 {t.compareMsgTie}</p>;
+    if (r >= 5) return <p className="font-gaming text-ochre font-bold text-lg tracking-wide">{t.compareMsg5x.replace('{winner}', winner).replace('{ratio}', String(r)).replace('{loser}', loser)}</p>;
+    if (r >= 2) return <p className="font-gaming text-olive font-bold text-lg tracking-wide">{t.compareMsg2x.replace('{winner}', winner).replace('{loser}', loser)}</p>;
+    if (r >= 1.2) return <p className="font-gaming text-dustyblue font-bold text-lg tracking-wide">{t.compareMsg1_2x.replace('{winner}', winner).replace('{loser}', loser)}</p>;
+    return <p className="font-gaming text-clay font-bold text-lg tracking-wide">{t.compareMsgTie}</p>;
   }
 
   function PlayerColumn({ slotNum }: { slotNum: 1 | 2 }) {
     const data = slotNum === 1 ? data1 : data2;
     const loading = slotNum === 1 ? loading1 : loading2;
     const error = slotNum === 1 ? error1 : error2;
-    const isWinner = w === slotNum;
+    const isWinner = winnerSlot === slotNum;
 
     return (
-      <div
-        className="flex-1 glass-card p-5 transition-all duration-300"
-        style={isWinner ? {
-          borderColor: 'rgba(251,191,36,0.4)',
-          boxShadow: '0 0 30px rgba(251,191,36,0.15)',
-        } : undefined}
-      >
+      <div className="flex-1 glass-card p-5" style={isWinner ? { borderColor: '#C8902E' } : undefined}>
         <div className="mb-4">
           <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">
             {t.comparePlayer} {slotNum}
@@ -88,19 +79,19 @@ function CompareContent() {
             defaultValue={slotNum === 1 ? defaultTag1 : ''}
             onSearch={tag => loadPlayer(tag, slotNum)}
           />
-          {loading && (
-            <p className="text-blue-400 text-xs mt-2 animate-pulse">{t.compareLoading}</p>
+          {loading && <p className="text-dustyblue text-xs mt-2 animate-pulse">{t.compareLoading}</p>}
+          {error && (
+            <p className="text-terracotta text-xs mt-2 flex items-center gap-1">
+              <i className="bi bi-exclamation-triangle" aria-hidden="true" />
+              {error}
+            </p>
           )}
-          {error && <p className="text-red-400 text-xs mt-2">⚠️ {error}</p>}
         </div>
 
         {isWinner && data && (
           <div className="text-center mb-3">
-            <span
-              className="font-gaming text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
-              style={{ background: '#FBBF24', color: '#000' }}
-            >
-              🏆 WINNER
+            <span className="font-gaming text-xs font-bold px-3 py-1 uppercase tracking-wider bg-ochre text-ink">
+              Winner
             </span>
           </div>
         )}
@@ -108,8 +99,8 @@ function CompareContent() {
         {data ? (
           <div className="space-y-4">
             <div className="text-center">
-              <h3 className="font-gaming text-xl font-bold text-white tracking-wide">{data.player.name}</h3>
-              <p className="text-blue-400/60 font-mono text-xs">{data.player.tag}</p>
+              <h3 className="font-gaming text-xl font-bold text-bone tracking-wide">{data.player.name}</h3>
+              <p className="text-dustyblue/70 font-mono text-xs">{data.player.tag}</p>
             </div>
 
             <div className="flex justify-center">
@@ -117,7 +108,7 @@ function CompareContent() {
             </div>
 
             <div className="text-center">
-              <p className="font-gaming text-3xl font-bold" style={{ color: '#FBBF24' }}>
+              <p className="font-gaming text-3xl font-bold text-ochre">
                 {formatEuros(data.accountValue.totalEuros)}
               </p>
               <p className="text-gray-500 text-xs mt-0.5">
@@ -126,44 +117,24 @@ function CompareContent() {
             </div>
 
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between py-1.5 border-b border-white/5">
-                <span className="text-gray-500 flex items-center gap-1"><Trophy size={11} /> {t.playerTrophies}</span>
-                <span className="text-white font-semibold font-gaming">{formatNumber(data.player.bestTrophies || data.player.trophies)}</span>
-              </div>
-              <div className="flex justify-between py-1.5 border-b border-white/5">
-                <span className="text-gray-500 flex items-center gap-1"><Swords size={11} /> Win rate</span>
-                <span className={`font-semibold font-gaming ${getWinRate(data.player.wins, data.player.losses) >= 50 ? 'text-green-400' : 'text-red-400'}`}>
-                  {getWinRate(data.player.wins, data.player.losses)}%
-                </span>
-              </div>
-              <div className="flex justify-between py-1.5 border-b border-white/5">
-                <span className="text-gray-500">🃏 {t.playerMaxCards}</span>
-                <span className="text-white font-semibold font-gaming">{(data.player.cards || []).filter(c => c.level >= 16).length}</span>
-              </div>
-              <div className="flex justify-between py-1.5 border-b border-white/5">
-                <span className="text-gray-500">⚡ {t.playerEvolutions}</span>
-                <span className="text-white font-semibold font-gaming">{(data.player.cards || []).filter(c => (c.evolutionLevel || 0) > 0).length}</span>
-              </div>
-              <div className="flex justify-between py-1.5">
-                <span className="text-gray-500">👑 {t.playerKingLevel}</span>
-                <span className="text-white font-semibold font-gaming">{data.player.expLevel}</span>
-              </div>
+              <StatLine icon="bi-trophy-fill" label={t.playerTrophies} value={formatNumber(data.player.bestTrophies || data.player.trophies)} />
+              <StatLine icon="bi-controller" label="Win rate" value={`${getWinRate(data.player.wins, data.player.losses)}%`} tone={getWinRate(data.player.wins, data.player.losses) >= 50 ? 'text-olive' : 'text-terracotta'} />
+              <StatLine icon="bi-collection-fill" label={t.playerMaxCards} value={(data.player.cards || []).filter(c => c.level >= 16).length} />
+              <StatLine icon="bi-lightning-charge-fill" label={t.playerEvolutions} value={(data.player.cards || []).filter(c => (c.evolutionLevel || 0) > 0).length} />
+              <StatLine icon="bi-award-fill" label={t.playerKingLevel} value={data.player.expLevel} />
             </div>
 
             <div className="text-center pt-1">
-              <p className="text-gray-400 text-sm">{data.accountValue.archetypeEmoji} {data.accountValue.archetype}</p>
+              <p className="text-gray-400 text-sm">{data.accountValue.archetype}</p>
             </div>
 
-            <Link
-              href={`/player/${data.player.tag.replace('#', '')}`}
-              className="block text-center text-blue-400 hover:text-blue-300 text-sm transition-colors"
-            >
+            <Link href={`/player/${data.player.tag.replace('#', '')}`} className="block text-center text-dustyblue hover:text-bone text-sm transition-colors">
               {t.compareFullProfile}
             </Link>
           </div>
         ) : (
           <div className="text-center py-10 text-gray-600">
-            <p className="text-4xl mb-3">🎮</p>
+            <i className="bi bi-person-vcard text-4xl mb-3 block" aria-hidden="true" />
             <p className="text-sm font-gaming tracking-wide">{t.compareEnterTag}</p>
           </div>
         )}
@@ -172,51 +143,56 @@ function CompareContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07070E] pb-16">
+    <div className="min-h-screen bg-espresso pb-16 text-bone">
       <div className="max-w-4xl mx-auto px-4 pt-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-300 text-sm transition-colors mb-8 group"
-        >
-          <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+        <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-300 text-sm transition-colors mb-8 group">
+          <i className="bi bi-arrow-left" aria-hidden="true" />
           {t.compareBack}
         </Link>
 
         <div className="text-center mb-10">
-          <span className="badge-blue mb-4 inline-block">⚔️ Battle</span>
-          <h1 className="font-gaming text-4xl sm:text-5xl font-bold text-white mb-2 tracking-wide">
+          <span className="badge-blue mb-4 inline-flex items-center gap-2">
+            <i className="bi bi-columns-gap" aria-hidden="true" />
+            Battle
+          </span>
+          <h1 className="font-gaming text-4xl sm:text-5xl font-bold text-bone mb-2 tracking-wide">
             {t.compareTitle}
           </h1>
           <div className="divider-glow w-32 mx-auto my-4" />
           <p className="text-gray-500">{t.compareSubtitle}</p>
         </div>
 
-        {/* Fun message */}
         {data1 && data2 && (
           <div className="glass-card p-5 text-center mb-6">
-            <FunMessage />
-            {ratio && (
-              <p className="text-gray-500 text-sm mt-1">
-                {t.compareRatio} {ratio}x
-              </p>
-            )}
+            <ComparisonMessage />
+            {ratio && <p className="text-gray-500 text-sm mt-1">{t.compareRatio} {ratio}x</p>}
           </div>
         )}
 
-        {/* VS divider */}
         <div className="flex items-center gap-4 mb-5">
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.5))' }} />
-          <span className="font-gaming text-xl font-bold text-blue-500 tracking-widest">VS</span>
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(37,99,235,0.5), transparent)' }} />
+          <div className="flex-1 h-px bg-line" />
+          <span className="font-gaming text-xl font-bold text-dustyblue tracking-widest">VS</span>
+          <div className="flex-1 h-px bg-line" />
         </div>
 
-        {/* Compare columns */}
         <div className="flex flex-col sm:flex-row gap-4">
           <PlayerColumn slotNum={1} />
           <PlayerColumn slotNum={2} />
         </div>
       </div>
       <Footer />
+    </div>
+  );
+}
+
+function StatLine({ icon, label, value, tone = 'text-bone' }: { icon: string; label: string; value: string | number; tone?: string }) {
+  return (
+    <div className="flex justify-between py-1.5 border-b border-white/5">
+      <span className="text-gray-500 flex items-center gap-1.5">
+        <i className={`bi ${icon}`} aria-hidden="true" />
+        {label}
+      </span>
+      <span className={`font-semibold font-gaming ${tone}`}>{value}</span>
     </div>
   );
 }

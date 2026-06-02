@@ -13,13 +13,16 @@ export default function AdBanner({ slot, format = 'auto', className = '' }: AdBa
     try {
       // @ts-ignore
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {}
+    } catch {}
   }, []);
 
   if (!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID) {
     return (
-      <div className={`bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-center text-gray-600 text-sm ${className}`}>
-        📢 Espace publicitaire
+      <div className={`bg-[#26231E] border border-line p-4 text-center text-gray-600 text-sm ${className}`}>
+        <span className="inline-flex items-center gap-2">
+          <i className="bi bi-megaphone" aria-hidden="true" />
+          Espace publicitaire
+        </span>
       </div>
     );
   }

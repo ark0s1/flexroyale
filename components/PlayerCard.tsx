@@ -50,7 +50,7 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
   const tag = player.tag.replace('#', '');
 
   return (
-    <div className="min-h-screen bg-[#07070E] pb-16">
+    <div className="min-h-screen bg-[#1C1A17] pb-16">
       {/* Back nav */}
       <div className="max-w-3xl mx-auto px-4 pt-6">
         <Link
@@ -65,23 +65,16 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
       {/* ─── Hero — player identity ─── */}
       <div className="max-w-3xl mx-auto px-4 mb-6">
         <div
-          className="rounded-2xl p-6 relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(7,7,14,0.8) 60%)',
-            border: '1px solid rgba(37,99,235,0.25)',
-          }}
+          className="p-6 relative overflow-hidden"
+          style={{ background: '#26231E', border: '1px solid #C0573B' }}
         >
-          <div
-            className="absolute top-[-60px] right-[-60px] w-48 h-48 rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)', filter: 'blur(30px)' }}
-          />
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 relative z-10">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <span className="badge-blue text-xs">King Level {player.expLevel}</span>
               </div>
               <h1 className="font-gaming text-3xl sm:text-4xl font-bold text-white tracking-wide">{player.name}</h1>
-              <p className="text-blue-400/70 font-mono text-xs mt-1">{player.tag}</p>
+              <p className="text-dustyblue/70 font-mono text-xs mt-1">{player.tag}</p>
               {player.clan && (
                 <p className="text-gray-500 text-sm mt-1.5 flex items-center gap-1">
                   <Users size={12} />
@@ -94,13 +87,13 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
             </div>
             <div className="flex gap-5 sm:gap-8">
               <div className="text-center">
-                <p className="font-gaming text-2xl font-bold" style={{ color: '#FBBF24' }}>
+                <p className="font-gaming text-2xl font-bold" style={{ color: '#C8902E' }}>
                   {formatNumber(player.trophies)}
                 </p>
                 <p className="text-gray-500 text-xs">{t.playerTrophies}</p>
               </div>
               <div className="text-center">
-                <p className="font-gaming text-2xl font-bold" style={{ color: '#FDE68A' }}>
+                <p className="font-gaming text-2xl font-bold" style={{ color: '#D8A94E' }}>
                   {formatNumber(player.bestTrophies)}
                 </p>
                 <p className="text-gray-500 text-xs">{t.playerRecord}</p>
@@ -113,14 +106,10 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
       {/* ─── Main value display ─── */}
       <div className="max-w-3xl mx-auto px-4 mb-6">
         <div className="glass-card p-6 text-center relative overflow-hidden">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(251,191,36,0.06) 0%, transparent 70%)' }}
-          />
           <p className="text-gray-500 text-xs uppercase tracking-widest mb-3 relative z-10">
             {t.playerEstimatedValue}
           </p>
-          <p className="font-gaming text-6xl sm:text-7xl font-bold mb-2 relative z-10" style={{ color: '#FBBF24', textShadow: '0 0 40px rgba(251,191,36,0.4)' }}>
+          <p className="font-gaming text-6xl sm:text-7xl font-bold mb-2 relative z-10" style={{ color: '#C8902E' }}>
             <AnimatedValue value={Math.round(accountValue.totalEuros)} suffix=" €" />
           </p>
           <p className="text-gray-600 text-sm mb-6 relative z-10">
@@ -133,9 +122,9 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
             <FlexGrade grade={accountValue.flexGrade} score={accountValue.flexScore} size="lg" />
             <div className="text-center sm:text-left">
               <p className="font-gaming text-2xl sm:text-3xl font-bold text-white">
-                {accountValue.archetypeEmoji} {accountValue.archetype}
+                {accountValue.archetype}
               </p>
-              <p className="text-blue-400 font-semibold mt-1 text-sm">
+              <p className="text-dustyblue font-semibold mt-1 text-sm">
                 {accountValue.topPercent} {t.playerWorldRank}
               </p>
               <p className="text-gray-600 text-xs mt-1">
@@ -178,29 +167,28 @@ export default function PlayerCard({ player, accountValue }: PlayerCardProps) {
                 <span className="text-gray-400 flex items-center gap-1.5">
                   <Swords size={12} /> Win rate
                 </span>
-                <span className={`font-gaming font-bold ${winRate >= 50 ? 'text-green-400' : 'text-red-400'}`}>
+                <span className={`font-gaming font-bold ${winRate >= 50 ? 'text-olive' : 'text-terracotta'}`}>
                   {winRate}%
                 </span>
               </div>
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+              <div className="h-1.5 overflow-hidden" style={{ background: 'rgba(236,230,216,0.08)' }}>
                 <div
-                  className="h-full rounded-full transition-all duration-700"
+                  className="h-full transition-all duration-700"
                   style={{
                     width: `${winRate}%`,
-                    background: winRate >= 50 ? '#10B981' : '#EF4444',
-                    boxShadow: winRate >= 50 ? '0 0 8px rgba(16,185,129,0.4)' : '0 0 8px rgba(239,68,68,0.4)',
+                    background: winRate >= 50 ? '#8A8B4A' : '#C0573B',
                   }}
                 />
               </div>
             </div>
-            <StatsRow label={t.playerMaxCards} value={maxCards} icon="🃏" color="text-purple-400" />
-            <StatsRow label={t.playerEvolutions} value={evolvedCards} icon="⚡" color="text-amber-400" />
-            <StatsRow label={t.playerHeroes} value={heroCards} icon="🦸" color="text-emerald-400" />
-            <StatsRow label={t.playerBattles} value={formatNumber(player.battleCount || 0)} icon="⚔️" />
-            <StatsRow label={t.playerThreeCrowns} value={formatNumber(player.threeCrownWins || 0)} icon="👑" color="text-amber-400" />
-            <StatsRow label={t.playerDonations} value={formatNumber(player.totalDonations || 0)} icon="🎁" />
+            <StatsRow label={t.playerMaxCards} value={maxCards} icon="bi-collection-fill" color="text-dustyblue" />
+            <StatsRow label={t.playerEvolutions} value={evolvedCards} icon="bi-lightning-charge-fill" color="text-ochre" />
+            <StatsRow label={t.playerHeroes} value={heroCards} icon="bi-star-fill" color="text-olive" />
+            <StatsRow label={t.playerBattles} value={formatNumber(player.battleCount || 0)} icon="bi-controller" />
+            <StatsRow label={t.playerThreeCrowns} value={formatNumber(player.threeCrownWins || 0)} icon="bi-award-fill" color="text-ochre" />
+            <StatsRow label={t.playerDonations} value={formatNumber(player.totalDonations || 0)} icon="bi-gift-fill" />
             {player.challengeMaxWins > 0 && (
-              <StatsRow label={t.playerChallengeWins} value={player.challengeMaxWins} icon="🏅" color="text-emerald-400" />
+              <StatsRow label={t.playerChallengeWins} value={player.challengeMaxWins} icon="bi-trophy-fill" color="text-olive" />
             )}
           </div>
         </div>

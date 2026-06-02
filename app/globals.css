@@ -1,28 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #07070E;
-  --foreground: #ffffff;
-  --blue: #2563EB;
-  --blue-light: #3B82F6;
-  --gold: #FBBF24;
-  --gold-light: #FDE68A;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(255, 255, 255, 0.15);
+  --background: #1C1A17;   /* espresso terreux */
+  --surface: #26231E;      /* surface carte */
+  --surface-2: #2F2B24;
+  --foreground: #ECE6D8;   /* off-white chaud */
+  --muted: #A39B8B;        /* gris chaud */
+  --line: #423C32;         /* bordures */
+  --terracotta: #C0573B;
+  --ochre: #C8902E;
+  --olive: #8A8B4A;
+  --dustyblue: #6E8C9E;
+  --clay: #9C7A5B;
+  --stone: #8A847A;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--background);
@@ -33,178 +32,88 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #07070E; }
-::-webkit-scrollbar-thumb { background: #1D4ED8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2563EB; }
+/* Scrollbar — aplat terreux, angles vifs */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--clay); }
+::-webkit-scrollbar-thumb:hover { background: var(--terracotta); }
 
-/* ─── Gaming font utility ─── */
+/* Police geometrique */
 .font-gaming {
   font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
-/* ─── Glass card ─── */
+/* Carte — aplat, bord net, pas d'arrondi, pas de flou, pas de glow */
 .glass-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color 0.15s ease;
 }
+.glass-card:hover { border-color: var(--clay); }
 
-.glass-card:hover {
-  border-color: var(--card-border-hover);
-}
+.glass-card-blue { background: var(--surface); border: 1px solid var(--dustyblue); }
+.glass-card-gold { background: var(--surface); border: 1px solid var(--ochre); }
 
-.glass-card-blue {
-  background: rgba(37, 99, 235, 0.06);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-}
+/* Anciens "textes degrades" => aplats terreux (aucun degrade) */
+.gradient-text { color: var(--dustyblue); }
+.gold-text { color: var(--ochre); }
+.gold-text-shine { color: var(--ochre); }
+.grade-s-shimmer { color: var(--ochre); }
 
-.glass-card-gold {
-  background: rgba(251, 191, 36, 0.06);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-}
-
-/* ─── Gradient text ─── */
-.gradient-text {
-  background: linear-gradient(135deg, #2563EB, #60A5FA);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.gold-text {
-  background: linear-gradient(135deg, #F59E0B, #FDE68A, #FBBF24);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.gold-text-shine {
-  background: linear-gradient(90deg, #F59E0B, #FDE68A, #FBBF24, #FDE68A, #F59E0B);
-  background-size: 200% auto;
-  animation: shine 3s linear infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Premium button ─── */
+/* Bouton — aplat terracotta, angles vifs, pas de glow */
 .btn-primary {
-  background: linear-gradient(135deg, #1D4ED8, #2563EB);
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  color: white;
+  background: var(--terracotta);
+  border: 1px solid var(--terracotta);
+  color: #FFF8EF;
   font-weight: 700;
-  border-radius: 12px;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+  transition: background 0.15s ease;
 }
+.btn-primary:hover { background: #A8462E; border-color: #A8462E; }
+.btn-primary:active { background: #8F3A24; }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #2563EB, #3B82F6);
-  box-shadow: 0 0 30px rgba(37, 99, 235, 0.5), 0 8px 25px rgba(0,0,0,0.3);
-  transform: translateY(-1px);
-}
+/* keyframes restantes (compat, non utilisees pour des degrades) */
+@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-/* ─── Grade S shimmer ─── */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes shine {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.grade-s-shimmer {
-  background: linear-gradient(90deg, #F59E0B, #FDE68A, #FBBF24, #FDE68A, #F59E0B);
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Background grid pattern ─── */
+/* Grille de fond — lignes fines terreuses (geometrie Bauhaus) */
 .bg-grid {
-  background-image: 
-    linear-gradient(rgba(37, 99, 235, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+  background-image:
+    linear-gradient(rgba(156,122,91,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156,122,91,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-/* ─── Glow blob ─── */
-.glow-blob-blue {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
-  filter: blur(60px);
-  pointer-events: none;
-}
+/* Glows supprimes */
+.glow-blob-blue, .glow-blob-gold { display: none !important; }
 
-.glow-blob-gold {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
-  filter: blur(60px);
-  pointer-events: none;
-}
-
-/* ─── Input premium ─── */
+/* Champ — aplat, angles vifs, pas de glow */
 .input-gaming {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--foreground);
+  transition: border-color 0.15s ease;
   outline: none;
 }
+.input-gaming:focus { border-color: var(--terracotta); background: var(--surface-2); }
 
-.input-gaming:focus {
-  border-color: rgba(37, 99, 235, 0.6);
-  background: rgba(37, 99, 235, 0.06);
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
-}
+/* Separateur — ligne pleine */
+.divider-glow { height: 1px; background: var(--line); }
 
-/* ─── Divider ─── */
-.divider-glow {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.4), transparent);
-}
-
-/* ─── Badge ─── */
+/* Badges — aplat, angles vifs */
 .badge-blue {
-  background: rgba(37, 99, 235, 0.15);
-  border: 1px solid rgba(37, 99, 235, 0.3);
-  color: #93C5FD;
-  border-radius: 999px;
+  background: rgba(110,140,158,0.16);
+  border: 1px solid var(--dustyblue);
+  color: #B9CDD8;
   font-size: 12px;
   font-weight: 600;
   padding: 2px 10px;
 }
-
 .badge-gold {
-  background: rgba(251, 191, 36, 0.15);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  color: #FDE68A;
-  border-radius: 999px;
+  background: rgba(200,144,46,0.16);
+  border: 1px solid var(--ochre);
+  color: #E2BE78;
   font-size: 12px;
   font-weight: 600;
   padding: 2px 10px;
